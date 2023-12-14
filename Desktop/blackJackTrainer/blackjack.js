@@ -10,12 +10,14 @@ let deck;
 
 let canHit = true;
 
+//Starts Game
 window.onload = function () {
     buildDeck();
     shuffleDeck();
     startGame();
 }
 
+//Builds the array that will serve as our deck
 function buildDeck() {
     let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
     let types = ["C", "D", "H", "S"];
@@ -29,6 +31,7 @@ function buildDeck() {
 
 }
 
+//Shuffles that deck
 function shuffleDeck() {
     for (let i = 0; i < deck.length; i++) {
         let j = Math.floor(Math.random() * deck.length);
@@ -39,6 +42,7 @@ function shuffleDeck() {
     console.log(deck);
 }
 
+//Gives each card a numerical value
 function getValue(card) {
     let data = card.split("-");
     let value = data[0];
@@ -52,6 +56,7 @@ function getValue(card) {
     return parseInt(value);
 }
 
+//Checks for A card
 function checkAce(card) {
     if (card[0] == "A") {
         return 1;
@@ -59,6 +64,7 @@ function checkAce(card) {
     return 0;
 }
 
+//Turns the value of an A from 11 to 1
 function reduceAce(playerSum, playerAceCount) {
     while (playerSum > 21 && playerAceCount > 0) {
         playerSum -= 10;
@@ -67,11 +73,13 @@ function reduceAce(playerSum, playerAceCount) {
     return playerSum;
 }
 
+
 function startGame() {
     hidden = deck.pop();
     dealerSum += getValue(hidden);
     dealerAceCount += checkAce(hidden);
 
+    //Gives the Dealer their first card
     let cardImg = document.createElement("img");
     let card = deck.pop();
     cardImg.src = "./cards/" + card + ".png";
@@ -79,6 +87,7 @@ function startGame() {
     dealerAceCount += checkAce(card);
     document.getElementById("dealer-cards").append(cardImg);
 
+    //Gives the player their first 2 cards
     for (let i = 0; i < 2; i++) {
         let cardImg = document.createElement("img");
         let card = deck.pop();
@@ -88,9 +97,14 @@ function startGame() {
         document.getElementById("your-cards").append(cardImg);
     }
 
-    console.log(yourSum);
     document.getElementById("hit").addEventListener("click", hit);
     document.getElementById("stay").addEventListener("click", stay);
+
+}
+
+function advice() {
+    let strategy = "";
+    
 
 }
 
@@ -129,8 +143,10 @@ function stay() {
     }
 
     let message = "";
+
     if (yourSum > 21) {
         message = "You Lose!";
+
     }
     else if (dealerSum > 21) {
         message = "You win!";
@@ -150,3 +166,5 @@ function stay() {
     document.getElementById("your-sum").innerText = yourSum;
     document.getElementById("results").innerText = message;
 }
+
+
